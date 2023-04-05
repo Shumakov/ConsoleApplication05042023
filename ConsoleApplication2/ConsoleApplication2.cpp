@@ -24,6 +24,9 @@ auto func(int a) {
 
 int main() {
 
+	setlocale(LC_ALL, "Rus");
+	cout << "Наша программа для проверки работы git" << endl;
+
 	Test t{};
 	t.a = 111;	
 	cout << t.a << endl;

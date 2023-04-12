@@ -1,67 +1,72 @@
-﻿#include <stdio.h>
-#include <string.h>
-#include <iostream>
+﻿#include <iostream> 
+using namespace std;
 
-using std::cout; 
-using std::endl;
 
-union Test {
-	int a;
-	char ch[4];
+class Student {
+	char name[255]{};
+	unsigned int age{};
+	int avMark{};
+
+public:
+	
+	Student(const char* n) {
+		cout << "Create class (2) Student " << n << endl;
+		setName(n);
+	}
+
+	Student(const char* n, unsigned int a) {
+		cout << "Create class Student " << n << endl;
+		setName(n);
+		setAge(a);
+	}
+	
+	int getAge() {
+		return age;
+	}
+
+	const char* getName() {
+		return name;
+	}
+
+	void setName(const char* n) {
+		strcpy_s(name,	255,n );		
+	}
+
+	void setAge(int a) {
+		if (a <= 30)
+			age = a;
+		else
+			age = 0;
+
+	}
+	void print() {
+		cout << "Student " << name << ", age " << age << "." << endl;
+		cout << " AV Mark = " << avMark << endl;
+	}
+
+
+private:
+	int calculate();
 };
-
-
-auto func(int a) {
-
-	if (a > 0) {
-		return 123.88;
-	}
-	else {
-		return (double)33;
-	}
-}
-
-int get_min(int a, int b) {
-
-	if (a > b)
-		return b;
-	return a;
-}
 
 
 int main() {
 
 	setlocale(LC_ALL, "Rus");
-	cout << "Наша программа для проверки работы git" << endl;
 
-	Test t{};
-	t.a = 111;	
-	cout << t.a << endl;
-	cout << (int)t.ch[0] << endl;
-	cout << (int)t.ch[1] << endl;
-	cout << (int)t.ch[2] << endl;
-	cout << (int)t.ch[3] << endl;
+	Student s1{ "Петров И И" , 25};
+	Student s2{ "Шумаков К А" , 45 };
+	Student s3{ "Иванов К А"};
+	s1.print();
+	s2.print();
 
-	//https://learn.microsoft.com/ru-ru/cpp/cpp/auto-cpp?view=msvc-170
-	auto var = 4/55;
+	s2.setName("Шумаков-Иванов Ф А");
+	s2.setAge(21);
+	s2.print();
 
-	//https://learn.microsoft.com/ru-ru/cpp/cpp/decltype-cpp?view=msvc-170
-	decltype (45.78 / 45) var1{6645.3434};
-
-	cout << var1 << endl;
-
-
-
-	// Созданиессылки с помощью decltype
-	int temp = 123;
-	int& l_temp = temp;
-	cout << l_temp << endl;
-	decltype (l_temp) decl_temp{temp};
-	decl_temp = 333;
-	cout << temp<< endl;
-	auto auto_temp = l_temp;
-
-
+	s2.setAge(51);
+	s2.print();
 
 	return 0;
 }
+

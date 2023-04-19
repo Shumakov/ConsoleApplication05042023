@@ -1,72 +1,71 @@
 ﻿#include <iostream> 
+#include "MyArray.h"
+#include "Money.h"
 using namespace std;
 
-
-class Student {
-	char name[255]{};
-	unsigned int age{};
-	int avMark{};
-
-public:
-	
-	Student(const char* n) {
-		cout << "Create class (2) Student " << n << endl;
-		setName(n);
-	}
-
-	Student(const char* n, unsigned int a) {
-		cout << "Create class Student " << n << endl;
-		setName(n);
-		setAge(a);
-	}
-	
-	int getAge() {
-		return age;
-	}
-
-	const char* getName() {
-		return name;
-	}
-
-	void setName(const char* n) {
-		strcpy_s(name,	255,n );		
-	}
-
-	void setAge(int a) {
-		if (a <= 30)
-			age = a;
-		else
-			age = 0;
-
-	}
-	void print() {
-		cout << "Student " << name << ", age " << age << "." << endl;
-		cout << " AV Mark = " << avMark << endl;
-	}
-
-
-private:
-	int calculate();
-};
-
-
 int main() {
-
 	setlocale(LC_ALL, "Rus");
+	srand(time(0));
+/*
+	test();
 
-	Student s1{ "Петров И И" , 25};
-	Student s2{ "Шумаков К А" , 45 };
-	Student s3{ "Иванов К А"};
-	s1.print();
-	s2.print();
+	MyArray	a;
+	a.gen();
+	a.print();
+	*/
 
-	s2.setName("Шумаков-Иванов Ф А");
-	s2.setAge(21);
-	s2.print();
+	Money m1{ 10,33 };
+	Money m2{ 11,48 };
 
-	s2.setAge(51);
-	s2.print();
+	m1.print();
+	m2.print();
 
-	return 0;
+
+	cout <<"if (m1 == m2) " << m1.equals(m2) << endl; 
+	cout << "if (m1 > m2) " << m1.gt(m2) << endl;
+	cout << "if (m1 < m2) " << m1.lt(m2) << endl;
+
+	Money m3 = m1;
+	m1.print();
+	m3.print();
+	cout << "if (m1 == m3) " << m1.equals(m3) << endl;
+
+	m1.plus(1, 1);
+	m1.print();
+	m1.plus(0, 99);
+	m1.print();
+	m1.minus(0, 99);
+	m1.print();
+
+	m1.plus(m2); // m1 += m2 // m1 = m1+ m2
+	m1.print();
+
+	int a = 10;
+	int b = 45;
+
+	a += b; // a =a+b
+
+	return 0;	
 }
+
+
+/*
+
+Класс Деньги для работы с денежными суммами.
+Число должно быть представлено двумя полями:
+типа long для рублей и типа 
+unsigned char - для копеек. 
+Дробная часть (копейки) при выводе на экран должна быть отделена от целой части запятой.
+Реализовать 
+сложение, 
+вычитание, 
+деление сумм, 
+деление суммы на дробное число, 
+умножение на дробное число 
+и операции сравнения.
+В функции main проверить эти методы.
+*/
+
+
+
 

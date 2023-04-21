@@ -10,6 +10,54 @@ void Money::plus(const Money& m) {
 	plus(m.rub, m.cent);
 }
 
+Money operator+(const Money& a, const Money& b) {
+	Money m(a.getRub() + b.getRub(), a.getCent() + b.getCent() );
+	m.normal();
+	return m;
+}
+
+Money& operator+= (Money& a, const Money& b) {
+	a.plus(b);
+	return a;
+}
+
+Money& operator++ (Money& a) {
+	a.plus(1, 0);
+	return a;
+}
+
+Money operator++ (Money& a, int) {
+	Money t = a;
+	++a;
+	return t;
+}
+
+Money& operator-- (Money& a) {
+	a.minus(1, 0);
+	return a;
+}
+Money operator-- (Money& a, int) {
+	Money t = a;
+	--a;
+	return t;
+}
+
+std::ostream& operator<< (std::ostream& o, const Money& m) {
+	o << m.getRub() << "," << (int)m.getCent();
+	return o;
+}
+
+std::istream& operator>> (std::istream& o, Money& m) {
+	unsigned long r;
+	unsigned short c;
+	o >> r;
+	o >> c;
+	m.setRub(r);
+	m.setCent(c);
+	return o;
+}
+
+
 void Money::minus(unsigned long r, unsigned char c) {
 	if (rub < r)
 		return;

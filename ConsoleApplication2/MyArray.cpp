@@ -5,7 +5,7 @@ void test() {
 	std::cout << "Message from test " << std::endl;
 }
 
-MyArray::MyArray(unsigned int size) :size{ size }, mass{ new int[size] {} }{
+MyArray::MyArray(unsigned int size) :size{ size }, mass{ new int[size]  }{
 	std::cout << "Create Array  = " << this << std::endl;
 }
 

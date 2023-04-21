@@ -7,7 +7,7 @@ class MyArray{
 	int* mass{};
 	unsigned int size{};
 public:
-	MyArray(unsigned int size = 10);
+	explicit MyArray(unsigned int size = 10);
 	MyArray(const MyArray& a);
 	~MyArray();
 	void gen();

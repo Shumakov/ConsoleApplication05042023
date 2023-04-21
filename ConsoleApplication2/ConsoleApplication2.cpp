@@ -1,11 +1,63 @@
 ﻿#include <iostream> 
 #include "MyArray.h"
 #include "Money.h"
+#include "Point.h"
 using namespace std;
+
+void print(const MyArray& a) {
+	a.print();
+}
 
 int main() {
 	setlocale(LC_ALL, "Rus");
 	srand(time(0));
+
+	Money a,b;
+
+	cout << "Enter rub/cent:";
+	cin >> a;
+	cout << "Enter rub/cent:";
+	cin >> b;
+	cout << a << endl;
+	cout << b << endl;
+
+	return 0;
+
+	/*MyArray a{ 10 };
+	a.gen();
+	print(a);*/
+
+
+	Money a1{ 1,5 };
+	Money a2{ 2,10 };
+	Money a3 = a1 + a2;
+	/*a1.print();
+	a2.print();
+	a3.print();
+
+
+	(a1++).print();
+	a1.print();
+
+	(a1--).print();
+	a1.print();*/
+
+	cout << a1<< " Rubl" << endl;
+
+	/*a3 += a2;
+	a3.print();
+
+	++a3;
+	cout << "++a3 = ";
+	a3.print();
+	(++a3).print();
+
+
+	--a3;
+	cout << "--a3 = ";
+	a3.print();
+	(--a3).print();*/
+
 /*
 	test();
 
@@ -14,8 +66,13 @@ int main() {
 	a.print();
 	*/
 
+
+	/*
+	Point p;
+
 	Money m1{ 10,33 };
 	Money m2{ 11,48 };
+	Money m3;
 
 	m1.print();
 	m2.print();
@@ -38,6 +95,7 @@ int main() {
 	m1.print();
 
 	m1.plus(m2); // m1 += m2 // m1 = m1+ m2
+	//m1 += m2;
 	m1.print();
 
 	int a = 10;
@@ -45,6 +103,8 @@ int main() {
 
 	a += b; // a =a+b
 
+
+	*/
 	return 0;	
 }
 

@@ -1,18 +1,31 @@
 #pragma once
+
 class Money{
 
 	unsigned long rub{};
 	unsigned char cent{};
+
+	/*void normal() {
+		rub += cent / 100;
+		cent %= 100;
+	}*/
+
+public:
+	Money() { std::cout << "Create Money" << std::endl; };
+	Money(unsigned long r, unsigned char c):rub { r }, cent{c}
+	{std::cout << "Create Money" << std::endl; };
 
 	void normal() {
 		rub += cent / 100;
 		cent %= 100;
 	}
 
-public:
-	Money() {};
-	Money(unsigned long r, unsigned char c):rub { r }, cent{c} {};
+	unsigned char getCent() const { return cent; };
+	unsigned long getRub() const { return rub; };
 
+	void setRub(unsigned long r) { rub = r; }
+	void setCent(unsigned char c) { cent = c; }
+	
 	void plus(unsigned long r, unsigned char c);
 	void plus( const Money& m);
 
@@ -31,3 +44,11 @@ public:
 	void print() const;
 };
 
+Money operator+ (const Money& a, const Money& b);
+Money& operator+= (Money& a, const Money& b);
+Money& operator++ (Money& a);
+Money operator++ (Money& a, int);
+Money& operator-- (Money& a);
+Money operator-- (Money& a, int);
+std::ostream& operator<< (std::ostream& o, const Money& m);
+std::istream& operator>> (std::istream& o, Money& m);

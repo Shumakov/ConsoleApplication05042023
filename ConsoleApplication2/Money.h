@@ -42,13 +42,19 @@ public:
 	bool gt(const Money& m) const;
 
 	void print() const;
+
+	friend std::ostream& operator<< (std::ostream& o, const Money& m);
+	friend std::istream& operator>> (std::istream& o, Money& m);
+
+	Money& operator+= ( const Money& b);
+	Money& operator++ ();
 };
 
 Money operator+ (const Money& a, const Money& b);
-Money& operator+= (Money& a, const Money& b);
-Money& operator++ (Money& a);
-Money operator++ (Money& a, int);
-Money& operator-- (Money& a);
-Money operator-- (Money& a, int);
-std::ostream& operator<< (std::ostream& o, const Money& m);
-std::istream& operator>> (std::istream& o, Money& m);
+//Money& operator+= (Money& a, const Money& b);
+//Money& operator++ (Money& a); // ++a
+Money operator++ (Money& a, int); // a++
+Money& operator-- (Money& a); // --a
+Money operator-- (Money& a, int); // a--
+
+

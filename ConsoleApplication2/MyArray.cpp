@@ -1,14 +1,18 @@
 #include <iostream>
+//#include <math.h>
 #include "MyArray.h"
 
 void test() {
 	std::cout << "Message from test " << std::endl;
 }
 
-MyArray::MyArray(unsigned int size) :size{ size }, mass{ new int[size]  }{
+//  Конструктор
+MyArray::MyArray(unsigned int size) :size{ size }, mass{ new int[size] {} }{
 	std::cout << "Create Array  = " << this << std::endl;
 }
 
+
+//  Конструктор копирования
 MyArray::MyArray(const MyArray& a) :size{ a.size } {
 	std::cout << "Create Array (COPY)  = " << this << std::endl;
 	mass = new int[size] {};
@@ -30,6 +34,12 @@ void MyArray::print() const {
 	std::cout << std::endl;
 }
 
+std::ostream& operator<< (std::ostream& o, const MyArray& m) {
+	for (unsigned int i{}; i < m.size; ++i)
+		o << m.mass[i] << " ";	
+	return o;
+}
+
 int MyArray::search(int key) const {
 	for (int i{}; i < size; ++i)
 		if (mass[i] == key)
@@ -41,4 +51,104 @@ void MyArray::set(unsigned int ind, int value) {
 	if (ind < size)
 		mass[ind] = value;
 }
+
+/*
+// Складываем элементы массива, результирующий массив бОльшего размера
+MyArray operator+ (const MyArray& a, const MyArray& b) {
+	unsigned int size = std::max(a.size,b.size) ;	
+	
+	MyArray arr{ size };
+
+	for (int i{}; i < size; ++i) {
+		if (i < a.size)
+			arr.mass[i] += a.mass[i];
+		if (i < b.size)
+			arr.mass[i] += b.mass[i];
+	}
+
+	return arr;		
+}
+*/
+
+// Конкотенация двух массивов
+MyArray operator+ (const MyArray& a, const MyArray& b) {
+	
+	MyArray arr{ a.size + b.size };
+
+	int j{};
+	for (int i{}; i < a.size; ++i,++j) 
+		arr.mass[j] += a.mass[i];
+
+	for (int i{}; i < b.size; ++i, ++j)
+		arr.mass[j] += b.mass[i];
+	
+	return arr;
+}
+
+//  Оператор сокращенное сложение
+MyArray& MyArray::operator+= (const MyArray& b) {
+
+	int* m = new int[size + b.size]{};
+
+	int j{};
+	for (int i{}; i < size; ++i, ++j)
+		m[j] = mass[i];
+	for (int i{}; i < b.size; ++i, ++j)
+		m[j] = b.mass[i];
+
+	delete[] mass;
+	size += b.size;
+	mass = m;
+	return *this;
+}
+
+
+
+MyArray operator+ (const MyArray& a, int b) {	
+	MyArray arr{ a.size };
+	for (int i{}; i < a.size; ++i)
+		arr.mass[i] += a.mass[i]+b;	
+	return arr;
+}
+
+int operator+ (int a, const MyArray& b) {
+
+	int res = a;
+	for (int i{}; i < b.size; ++i)
+		res += b.mass[i];
+
+	return res;
+
+}
+
+bool operator== (const MyArray& a, const MyArray& b) {
+
+	if (a.size != b.size)
+		return false;
+	for (int i{}; i < a.size; ++i)
+		if (a.mass[i] != b.mass[i])
+			return false;
+	return true;
+}
+
+
+//  Оператор приравнивания 
+// Коректная работа с памятью
+MyArray& MyArray::operator= (const MyArray& a) {
+
+	std::cout << "operator=" << std::endl;
+
+	//  Исключаем приравнивание сосмому себе
+	if (this == &a)
+		return *this;
+
+	delete[] mass;
+	size = a.size;
+	mass = new int[size];
+	for (int i{}; i < size; i++)
+		mass[i] = a.mass[i];
+
+	return *this;
+}
+
 

@@ -16,14 +16,14 @@ Money operator+(const Money& a, const Money& b) {
 	return m;
 }
 
-Money& operator+= (Money& a, const Money& b) {
-	a.plus(b);
-	return a;
+Money& Money::operator+= (const Money& b) {
+	plus(b);
+	return *this;
 }
 
-Money& operator++ (Money& a) {
-	a.plus(1, 0);
-	return a;
+Money& Money::operator++ () {	
+	++rub;
+	return *this;
 }
 
 Money operator++ (Money& a, int) {
@@ -43,17 +43,15 @@ Money operator-- (Money& a, int) {
 }
 
 std::ostream& operator<< (std::ostream& o, const Money& m) {
-	o << m.getRub() << "," << (int)m.getCent();
+	o << m.rub << "," << (int)m.cent;
 	return o;
 }
 
-std::istream& operator>> (std::istream& o, Money& m) {
-	unsigned long r;
-	unsigned short c;
-	o >> r;
-	o >> c;
-	m.setRub(r);
-	m.setCent(c);
+std::istream& operator>> (std::istream& o, Money& m) {	
+	int t;
+	o >> m.rub;
+	o >> t;	
+	m.cent = t;
 	return o;
 }
 

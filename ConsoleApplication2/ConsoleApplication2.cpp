@@ -8,103 +8,79 @@ void print(const MyArray& a) {
 	a.print();
 }
 
+MyArray getArr(unsigned int s) {
+	cout << "MyArray getArr(unsigned int s)" << endl;
+	MyArray a{ s };
+	a.gen();
+	return a;
+}
+
 int main() {
 	setlocale(LC_ALL, "Rus");
 	srand(time(0));
 
-	Money a,b;
+	//MyArray arr1{ 5 };
+	//arr1.gen();
+	////cout << arr1 << endl;
+	//MyArray arr2{ 5 };
+	//arr2.gen();
+	//cout << arr2 << endl;
+	//arr2 = arr2;
+	//cout << arr2 << endl;
 
-	cout << "Enter rub/cent:";
-	cin >> a;
-	cout << "Enter rub/cent:";
-	cin >> b;
-	cout << a << endl;
-	cout << b << endl;
-
-	return 0;
-
-	/*MyArray a{ 10 };
-	a.gen();
-	print(a);*/
+	//arr2 += arr1;
 
 
-	Money a1{ 1,5 };
-	Money a2{ 2,10 };
-	Money a3 = a1 + a2;
-	/*a1.print();
-	a2.print();
-	a3.print();
+	//MyArray arr2{ getArr(10) };
 
+	MyArray arr1{ 3 };
+	MyArray arr2{ 4 };
 
-	(a1++).print();
-	a1.print();
+	arr1.set(0, 1);
+	arr1.set(1, 2);
+	arr1.set(2, 3);
 
-	(a1--).print();
-	a1.print();*/
+	arr2.set(0, 4);
+	arr2.set(1, 5);
+	arr2.set(2, 6);
+	arr2.set(3, 7);
 
-	cout << a1<< " Rubl" << endl;
+	//MyArray arr3 = arr1 + arr2;
 
-	/*a3 += a2;
-	a3.print();
+	//arr1 = arr1 + arr2;
+	arr1 += arr2;
 
-	++a3;
-	cout << "++a3 = ";
-	a3.print();
-	(++a3).print();
-
-
-	--a3;
-	cout << "--a3 = ";
-	a3.print();
-	(--a3).print();*/
-
-/*
-	test();
-
-	MyArray	a;
-	a.gen();
-	a.print();
-	*/
-
+	cout << arr1 << endl;
+	cout << arr2 << endl;
+	
 
 	/*
-	Point p;
+	MyArray arr4{ 3 };
+	MyArray arr5{ 3 };
 
-	Money m1{ 10,33 };
-	Money m2{ 11,48 };
-	Money m3;
+	arr4.set(0, 1);
+	arr4.set(1, 2);
+	arr4.set(2, 3);
 
-	m1.print();
-	m2.print();
+	arr5.set(0, 1);
+	arr5.set(1, 2);
+	arr5.set(2, 6);
+	
+	cout << "(arr4 == arr5)  " << (arr4 == arr5) << endl;*/
 
+	/*MyArray arr4 = arr3 + 10;
+	cout << arr4 << endl;
 
-	cout <<"if (m1 == m2) " << m1.equals(m2) << endl; 
-	cout << "if (m1 > m2) " << m1.gt(m2) << endl;
-	cout << "if (m1 < m2) " << m1.lt(m2) << endl;
+	cout << arr1 + 4 + arr4 << endl;*/
 
-	Money m3 = m1;
-	m1.print();
-	m3.print();
-	cout << "if (m1 == m3) " << m1.equals(m3) << endl;
+	//MyArray arr{ 10 };
+	//arr.gen();
+	////arr.print();
 
-	m1.plus(1, 1);
-	m1.print();
-	m1.plus(0, 99);
-	m1.print();
-	m1.minus(0, 99);
-	m1.print();
+	//MyArray arr1{ 10 };
+	//arr1.gen();
+	//cout << arr <<" | "<< arr1 << endl;
 
-	m1.plus(m2); // m1 += m2 // m1 = m1+ m2
-	//m1 += m2;
-	m1.print();
-
-	int a = 10;
-	int b = 45;
-
-	a += b; // a =a+b
-
-
-	*/
 	return 0;	
 }
 

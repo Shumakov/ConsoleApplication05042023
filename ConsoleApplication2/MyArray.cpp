@@ -1,12 +1,11 @@
 #include <iostream>
-//#include <math.h>
 #include "MyArray.h"
 
 void test() {
 	std::cout << "Message from test " << std::endl;
 }
 
-//  Конструктор
+//  Конструктор с применением инициализационного спаска
 MyArray::MyArray(unsigned int size) :size{ size }, mass{ new int[size] {} }{
 	std::cout << "Create Array  = " << this << std::endl;
 }
@@ -15,13 +14,18 @@ MyArray::MyArray(unsigned int size) :size{ size }, mass{ new int[size] {} }{
 //  Конструктор копирования
 MyArray::MyArray(const MyArray& a) :size{ a.size } {
 	std::cout << "Create Array (COPY)  = " << this << std::endl;
+
+	// Механизм глубокого копирования данных из второго экземпляра
 	mass = new int[size] {};
 	for (int i{}; i < size; i++)
 		mass[i] = a.mass[i];
 }
 
+
+//  Деструктор
 MyArray::~MyArray() {
 	std::cout << "Delete Array  = " << this << std::endl;
+	//  Освобождение памяти
 	delete[] mass;
 }
 void MyArray::gen() {
@@ -73,14 +77,20 @@ MyArray operator+ (const MyArray& a, const MyArray& b) {
 // Конкотенация двух массивов
 MyArray operator+ (const MyArray& a, const MyArray& b) {
 	
+	//  Создаем новый экземпляр, размер равен
+	//  сумме размеров складываемых экземпляров
 	MyArray arr{ a.size + b.size };
 
+	
 	int j{};
+	
+	// Копирование данных из левого операнда
 	for (int i{}; i < a.size; ++i,++j) 
-		arr.mass[j] += a.mass[i];
+		arr.mass[j] = a.mass[i];
 
+	// Копирование данных из правого операнда
 	for (int i{}; i < b.size; ++i, ++j)
-		arr.mass[j] += b.mass[i];
+		arr.mass[j] = b.mass[i];
 	
 	return arr;
 }
@@ -88,16 +98,25 @@ MyArray operator+ (const MyArray& a, const MyArray& b) {
 //  Оператор сокращенное сложение
 MyArray& MyArray::operator+= (const MyArray& b) {
 
+	// Создаем новый массив данных , размер равен
+	//  сумме размеров складываемых экземпляров
 	int* m = new int[size + b.size]{};
 
 	int j{};
+	// Копирование данных из левого операнда
 	for (int i{}; i < size; ++i, ++j)
 		m[j] = mass[i];
+
+	// Копирование данных из правого операнда
 	for (int i{}; i < b.size; ++i, ++j)
 		m[j] = b.mass[i];
 
+	//  Освобождаем ранее выделеную память
 	delete[] mass;
+
+	//  Сохраняем новый размер массива данных
 	size += b.size;
+	 // Сохраняем сам массив
 	mass = m;
 	return *this;
 }
@@ -133,7 +152,7 @@ bool operator== (const MyArray& a, const MyArray& b) {
 
 
 //  Оператор приравнивания 
-// Коректная работа с памятью
+// Корректная работа с памятью
 MyArray& MyArray::operator= (const MyArray& a) {
 
 	std::cout << "operator=" << std::endl;
@@ -142,9 +161,16 @@ MyArray& MyArray::operator= (const MyArray& a) {
 	if (this == &a)
 		return *this;
 
+	//  Освобождаем ранее выделеную память
 	delete[] mass;
+
+	//  Сохраняем новый размер массива данных
 	size = a.size;
+
+	// Создаем новый массив данных 
 	mass = new int[size];
+
+	// Копирование данных из правого операнда
 	for (int i{}; i < size; i++)
 		mass[i] = a.mass[i];
 

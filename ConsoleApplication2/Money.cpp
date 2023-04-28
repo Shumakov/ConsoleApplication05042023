@@ -101,3 +101,20 @@ bool Money::gt(const Money& m) const {
 void Money::print() const {
 	std::cout << rub << "," << (int)cent << std::endl;
 }
+
+
+long Money::operator[] (const char v) const {
+
+	if (v == 'R' || v == 'r')
+		return rub;
+	return cent;
+}
+
+Money::operator int() {
+
+	return rub;
+}
+
+Money::operator double() {
+	return rub +cent/100.0;
+}

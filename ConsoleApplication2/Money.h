@@ -48,6 +48,12 @@ public:
 
 	Money& operator+= ( const Money& b);
 	Money& operator++ ();
+
+	long operator[] (const char v) const;
+	//long operator[] (const char v);
+
+	explicit operator int ();
+	operator double();
 };
 
 Money operator+ (const Money& a, const Money& b);

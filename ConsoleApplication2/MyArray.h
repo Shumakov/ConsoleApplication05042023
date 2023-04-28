@@ -19,6 +19,10 @@ public:
 	//  то необходима реализация этого конструктора с механизмом глубокого копирования
 	MyArray(const MyArray& a);
 
+	// Конструктор перемещения, вызывается для копирования временных обьектов
+	// В нем отсутствует глубокое коприрование
+	MyArray(MyArray&& a);
+
 	// Деструктор
 	~MyArray();
 
@@ -28,6 +32,7 @@ public:
 	void print() const;
 	int search(int key) const;
 	void set(unsigned int ind, int value);
+	int get(unsigned int ind);
 
 	unsigned int getSize() const {
 		return size;
@@ -42,6 +47,8 @@ public:
 	// Перегрузка оператора +, оба операнда эеземпляры нашего класса
 	// возвращает новый элемент
 	friend MyArray operator+ (const MyArray& a, const MyArray& b);
+	// MyArray operator+ (const MyArray& b);
+
 
 	// Перегрузка оператора +, левый операнд -  эеземпляр нашего класса
 	// правый операнд - целочисленная переменная
@@ -68,8 +75,15 @@ public:
 	// работа с динамической памятью
 	MyArray& operator= (const MyArray& a);
 
+	// Оператор = (перемещающего приравнивания)	
+	// Не происходит глубокого копирования
+	MyArray& operator= (MyArray&& a);
+
 	// Оператор += (сокращенное сложение)
 	MyArray& operator+= (const MyArray& b);
+
+	int operator[] (unsigned int) const;
+	int& operator[] (unsigned int);
 
 	//friend std::istream& operator>> (std::istream& o, MyArray& m);
 };

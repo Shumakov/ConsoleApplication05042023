@@ -1,4 +1,5 @@
 #include <iostream>
+#include <cassert>
 #include "MyArray.h"
 
 void test() {
@@ -22,12 +23,24 @@ MyArray::MyArray(const MyArray& a) :size{ a.size } {
 }
 
 
+//  Конструктор перемещения
+MyArray::MyArray(MyArray&& a):size{ a.size } {
+	std::cout << "Create Array (MOVE)  = " << this << std::endl;
+	// Сохранили указатель на динамическую память
+	mass = a.mass;
+	// Отвязали указатель переданного обьекта от динамической памяти
+	a.mass = nullptr;
+}
+
+
+
 //  Деструктор
 MyArray::~MyArray() {
 	std::cout << "Delete Array  = " << this << std::endl;
 	//  Освобождение памяти
 	delete[] mass;
 }
+
 void MyArray::gen() {
 	for (unsigned int i{}; i < size; ++i)
 		mass[i] = rand() % 101;
@@ -54,6 +67,25 @@ int MyArray::search(int key) const {
 void MyArray::set(unsigned int ind, int value) {
 	if (ind < size)
 		mass[ind] = value;
+}
+
+int MyArray::get(unsigned int ind) {
+	if (ind >= size)
+		return -1;
+	return mass[ind];
+}
+
+int MyArray::operator[] (unsigned int ind) const {
+	if (ind >= size)
+		return -1;
+	return mass[ind];
+}
+
+int& MyArray::operator[] (unsigned int ind){	
+	// Сообщение об ошибке работы программы
+	// Условие в скобках не истина
+	assert(ind < size && "Error, index very big");
+	return mass[ind];
 }
 
 /*
@@ -155,25 +187,44 @@ bool operator== (const MyArray& a, const MyArray& b) {
 // Корректная работа с памятью
 MyArray& MyArray::operator= (const MyArray& a) {
 
-	std::cout << "operator=" << std::endl;
+	std::cout << "operator= COPY" << std::endl;
 
-	//  Исключаем приравнивание сосмому себе
+	//  Исключаем приравнивание самому себе
 	if (this == &a)
 		return *this;
 
-	//  Освобождаем ранее выделеную память
-	delete[] mass;
-
-	//  Сохраняем новый размер массива данных
-	size = a.size;
-
-	// Создаем новый массив данных 
-	mass = new int[size];
+	if (size != a.size) {
+		//  Освобождаем ранее выделеную память
+		delete[] mass;
+		//  Сохраняем новый размер массива данных
+		size = a.size;
+		// Создаем новый массив данных 
+		mass = new int[size];
+	}
 
 	// Копирование данных из правого операнда
-	for (int i{}; i < size; i++)
+	for (int i{}; i < size; i++) {
+		std::cout << "copy data" << std::endl;
 		mass[i] = a.mass[i];
+	}
 
+	return *this;
+}
+
+//  Оператор перемещающего приравнивания 
+
+MyArray& MyArray::operator= (MyArray&& a) {
+
+	std::cout << "operator= MOVE" << std::endl;
+
+	//  Освобождаем ранее выделеную память
+	delete[] mass;	
+	//  Сохраняем новый размер массива данных
+	size = a.size;
+	// Создаем новый массив данных 
+	mass = a.mass;
+	a.mass = nullptr;
+	
 	return *this;
 }
 

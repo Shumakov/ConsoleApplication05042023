@@ -5,9 +5,14 @@ class Point3D;
 class Point2D
 {
 public:
-	int x;
-	int y;
+	int x{};
+	int y{};
+	Point2D() = default;
 	Point2D(int x, int y) :x{ x }, y{ y } {};
+
+	Point2D(const Point2D&) = delete;
+
+
 	operator Point3D (); 
 
 };

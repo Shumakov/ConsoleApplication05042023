@@ -33,6 +33,38 @@ sizeof, typeid и операторы каста.
 
 
 
+/*
+компилятор сгенерирует
+■ конструктор по умолчанию,
+■ конструктор копирования,
+■ оператор копирующего присваивания,
+■ конструктор перемещения,
+■ оператор перемещающего присваивания,
+■ деструктор.
+
+
+НО!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+
+■ явное определение собственной версии произвольно-
+го конструктора предотвращает автоматическую гене-
+рацию компилятором конструктора по умолчанию;
+■ явное определение конструктора перемещения или
+оператора перемещающего присваивания предот-
+вращает автоматическую генерацию компилятором
+как конструктора копирования, так и оператора ко-
+пирующего присваивания;
+■ явное определение конструктора копирования, опе-
+ратора копирующего присваивания, конструктора
+перемещения, оператора перемещающего присваи-
+вания или деструктора предотвращает автоматиче-
+скую генерацию компилятором как конструктора
+перемещения, так и оператора перемещающего при-
+сваивания.
+
+*/
+
+
+
 
 void print(const MyArray& a) {
 	a.print();
@@ -45,9 +77,114 @@ MyArray getArr(unsigned int s) {
 	return a;
 }
 
+
+void func_counter() {
+	static int a{};
+	cout << a << endl;
+	a++;
+
+}
+
+
+class Counter {
+	int cnt;
+public:
+	Counter(int start=0) : cnt{ start } {};
+
+	//Counter() : Counter(0) {};
+
+	int operator()() { return ++cnt; }
+	int operator()(int v) { return cnt += v; }
+	int operator()(char v) {
+
+		switch ( v)
+		{
+		case 'P':
+			cnt += 4;
+			break;
+		case 'M':
+			cnt -= 4;
+			break;
+		case 'Y':
+			cnt *= 4;
+			break;
+		default:
+			break;
+		}
+		
+		return cnt; 
+	}
+
+	void resetTo(int start) { cnt = start; }
+};
+
+void useCntr() {
+
+	const int maxCnt{ 5 };
+	Counter cnt1{};
+	Counter cnt2{ 100 };
+	for (int i{ 0 }; i < maxCnt; ++i)
+	{
+		std::cout << "cnt1: " << cnt1() << '\n';
+		std::cout << "cnt2: " << cnt2() << '\n';
+	}
+	std::cout << '\n';
+	cnt1.resetTo(10);
+	cnt2.resetTo(200);
+	for (int i{ 0 }; i < maxCnt; ++i)
+	{
+		std::cout << "cnt1: " << cnt1() << '\n';
+		std::cout << "cnt2: " << cnt2('Y') << '\n';
+	}
+	std::cout << '\n';
+}
+
+
 int main() {
 	setlocale(LC_ALL, "Rus");
 	srand(time(0));
+
+	//Point2D point_1;
+	//Point2D point_2 = point_1;
+
+
+	int a = 55;
+
+	int& l = a;
+
+	const int& l1 = (56 + 89);
+
+	int&& l3 = (56 + 89);
+
+
+	//useCntr();
+/*
+	func_counter();
+	func_counter();
+	func_counter();
+	func_counter();
+	func_counter();
+	*/
+	return 0;
+
+
+
+
+
+	MyArray* a1 = new MyArray{10};
+	a1->gen();
+	MyArray* a2 = new MyArray{ std :: move( * a1)};
+	
+	delete a1;
+		
+	a2->print();
+
+
+	delete a2;
+	 
+	return 0;
+
+
 
 	Point2D p2d{ 1,1 };
 	Point3D p3d{ 2,2,2 };
@@ -63,20 +200,20 @@ int main() {
 
 	cout << p3d.x << ", " << p3d.y << ", " << p3d.z << endl;
 
-	/*Money m{ 10,30 };
+	Money m{ 10,30 };
 
 	cout << m.getRub() << endl;
 	cout << (int)m.getCent() << endl;
 
 	cout << m['R'] << endl;
-	cout << m['x'] << endl;
+	cout << m['c'] << endl;
 
 	int r = (int)m;
 
 	double d = m;
 
 	cout <<"r = " << r << endl;
-	cout << "d = " << d << endl;*/
+	cout << "d = " << d << endl;
 		
 
 /*
@@ -95,8 +232,8 @@ int main() {
 	*/
 
 
-
-	/*MyArray arr{ 20 };
+	/*
+	MyArray arr{ 20 };
 	arr = getArr(10);
 	std::cout << arr << endl;
 
@@ -104,8 +241,8 @@ int main() {
 	std::cout << arr[0] << endl;
 	arr.set(0, 100);
 	arr[0] = 100;
-	std::cout << arr << endl;*/
-
+	std::cout << arr << endl;
+	*/
 	
 
 

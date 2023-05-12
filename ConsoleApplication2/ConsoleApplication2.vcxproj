@@ -151,6 +151,7 @@
     <ClInclude Include="MyArray.h" />
     <ClInclude Include="Point.h" />
     <ClInclude Include="Point2D.h" />
+    <ClInclude Include="Test.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

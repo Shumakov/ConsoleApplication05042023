@@ -3,6 +3,7 @@
 #include "Money.h"
 #include "Point.h"
 #include "Point2D.h"
+#include "Test.h"
 
 using namespace std;
 
@@ -72,7 +73,7 @@ void print(const MyArray& a) {
 
 MyArray getArr(unsigned int s) {
 	std::cout << "MyArray getArr(unsigned int s)" << endl;
-	MyArray a{ s };
+	MyArray a ( s );
 	a.gen();
 	return a;
 }
@@ -139,174 +140,146 @@ void useCntr() {
 	std::cout << '\n';
 }
 
+template <class T>
+void print(T t) {
+	cout << t << endl;
+}
+
+void print(double t) {
+
+	cout << "C = " << (int)t << endl;
+	cout << "D = " <<t -  (int)t << endl;
+
+}
+
+
+
+
+
+template <class T>
+class Array {
+
+	T* arr{};
+	unsigned int size{};
+public:
+	Array(const Array&) = delete;
+	Array operator= (const Array&) = delete;
+
+	Array(unsigned  int size) : size{ size } {
+		arr = new T[size]{};
+	}
+
+	T* begin() { return arr; }
+	T* end() { return arr + size; }
+
+	Array(const std::initializer_list<T>& list) : Array(list.size()) {
+		int i{};
+
+		auto el = list.begin();
+
+		//for (auto& el: list){
+		for (; i < list.size(); i++, ++el) {
+			arr[i] = *el;
+		}
+	}
+
+
+
+	~Array() {
+		delete[] arr;
+	}
+
+	int search(T) const;
+
+
+
+	friend std::ostream& operator<<<> (std::ostream& o, const Array<T>& m);
+	/*{
+			for (unsigned int i{}; i < m.size; ++i)
+				 o << m.arr[i] << " ";
+		 return o;
+	 }*/
+
+
+	int operator[] (int i) const {
+		return 0;
+	}
+};
+
+
+
 
 int main() {
 	setlocale(LC_ALL, "Rus");
 	srand(time(0));
 
-	//Point2D point_1;
-	//Point2D point_2 = point_1;
+	/*print(2);
+	print(2.56);
+	print('D');
+	print("test");
+	print("test 3");*/
 
 
-	int a = 55;
+	Point_v1<int> p1(1, 1);
+	Point_v1<double> p2(1.45, 1.67);
 
-	int& l = a;
-
-	const int& l1 = (56 + 89);
-
-	int&& l3 = (56 + 89);
-
-
-	//useCntr();
-/*
-	func_counter();
-	func_counter();
-	func_counter();
-	func_counter();
-	func_counter();
-	*/
+	cout << "P1 = " << p1 << "  P2 = " << p2 << endl;
 	return 0;
 
-
-
-
-
-	MyArray* a1 = new MyArray{10};
-	a1->gen();
-	MyArray* a2 = new MyArray{ std :: move( * a1)};
 	
-	delete a1;
-		
-	a2->print();
+	Test<int> t_int{ 12 };
+
+	Test<double> t_double{ 11.77 };
+
+	Test<string> t_str{ "Test" };
+	Test<string> t_str1{ "Test" };
 
 
-	delete a2;
-	 
+	Test<Test<int>> t_test{ Test{10} };
+
+	//t_test += t_int;
+
+
+	//t_double+= t_int;
+
+	t_str += t_str1;
+
+
+	cout << t_str.get() << endl;
+
+
+
+
+	//cout << t.get() << endl;
+
+	////t.calculate(2);
+	////cout << t.get() << endl;
+
+
+	//Test<double> t1( 12.56 );
+	//cout << t1.get() << endl;
+
+	//t += tt;
+
+	//t += t1;
+
+	//cout << t.get() << endl;
+
+	////Test<string> t2("sdfdsfdsfkldsfkldfsds");
+	////cout << t2.get() << endl;
+
 	return 0;
-
-
-
-	Point2D p2d{ 1,1 };
-	Point3D p3d{ 2,2,2 };
-
-	cout << p2d.x << ", " << p2d.y << endl;
-	cout << p3d.x << ", " << p3d.y << ", "<<p3d.z << endl;
-
-	p2d = p3d;
-
-	cout << p2d.x << ", " << p2d.y << endl;
-
-	p3d = p2d;
-
-	cout << p3d.x << ", " << p3d.y << ", " << p3d.z << endl;
-
-	Money m{ 10,30 };
-
-	cout << m.getRub() << endl;
-	cout << (int)m.getCent() << endl;
-
-	cout << m['R'] << endl;
-	cout << m['c'] << endl;
-
-	int r = (int)m;
-
-	double d = m;
-
-	cout <<"r = " << r << endl;
-	cout << "d = " << d << endl;
-		
-
-/*
-	// Целочисленная переменная
-	int a = 33;
-	//  Ссылка на переменную а (lvalue)
-	int& b = a;
-
-	// Ссылка на временный обьект (rvalue)
-	const int& b1 = 56 + 89;
-
-	// Ссылка на временный обьект (rvalue)
-	int&& b2 = (33 + 56);
-
-	cout << b1 << endl;
-	*/
-
-
-	/*
-	MyArray arr{ 20 };
-	arr = getArr(10);
-	std::cout << arr << endl;
-
-	std::cout << arr.get(0) << endl;
-	std::cout << arr[0] << endl;
-	arr.set(0, 100);
-	arr[0] = 100;
-	std::cout << arr << endl;
-	*/
 	
+	MyArray a1{1,2,3,4,5,6,7,9};
 
-
-	//MyArray arr1{ 5 };
-	//arr1.gen();
-	////cout << arr1 << endl;
-	//MyArray arr2{ 5 };
-	//arr2.gen();
-	//cout << arr2 << endl;
-	//arr2 = arr2;
-	//cout << arr2 << endl;
-
-	//arr2 += arr1;
-
-
-	//MyArray arr2{ getArr(10) };
-
-	/*MyArray arr1{ 3 };
-	MyArray arr2{ 4 };
-
-	arr1.set(0, 1);
-	arr1.set(1, 2);
-	arr1.set(2, 3);
-
-	arr2.set(0, 4);
-	arr2.set(1, 5);
-	arr2.set(2, 6);
-	arr2.set(3, 7);*/
-
-	//MyArray arr3 = arr1 + arr2;
-
-	//arr1 = arr1 + arr2;
-	/*arr1 += arr2;
-
-	cout << arr1 << endl;
-	cout << arr2 << endl;*/
+	cout << a1 << endl;
 	
-
-	/*
-	MyArray arr4{ 3 };
-	MyArray arr5{ 3 };
-
-	arr4.set(0, 1);
-	arr4.set(1, 2);
-	arr4.set(2, 3);
-
-	arr5.set(0, 1);
-	arr5.set(1, 2);
-	arr5.set(2, 6);
 	
-	cout << "(arr4 == arr5)  " << (arr4 == arr5) << endl;*/
+	for (auto& el : a1) {
 
-	/*MyArray arr4 = arr3 + 10;
-	cout << arr4 << endl;
-
-	cout << arr1 + 4 + arr4 << endl;*/
-
-	//MyArray arr{ 10 };
-	//arr.gen();
-	////arr.print();
-
-	//MyArray arr1{ 10 };
-	//arr1.gen();
-	//cout << arr <<" | "<< arr1 << endl;
+		cout << el << endl;
+	}
+	
 
 	return 0;	
 }

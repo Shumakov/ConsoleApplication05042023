@@ -2,6 +2,23 @@
 #include <cassert>
 #include "MyArray.h"
 
+
+// Консруктор позволяет создавать обьект с помощью унифицированного механизма списковой инициализации
+//  std::initializer_list находится в библиотеке <initializer_list>
+MyArray::MyArray(const std::initializer_list<int>& list) : MyArray(list.size()) {
+	
+	int i{};
+	//for (; i < list.size(); i++, ++el) {
+	//auto el = list.begin();
+
+	//  for each цикл 
+	for (auto& el: list){	
+		mass[i] = el;
+		++i;
+	}
+}
+
+
 void test() {
 	std::cout << "Message from test " << std::endl;
 }
@@ -112,7 +129,7 @@ MyArray operator+ (const MyArray& a, const MyArray& b) {
 	
 	//  Создаем новый экземпляр, размер равен
 	//  сумме размеров складываемых экземпляров
-	MyArray arr{ a.size + b.size };
+	MyArray arr( a.size + b.size );
 
 	
 	int j{};
@@ -155,7 +172,7 @@ MyArray& MyArray::operator+= (/* MyArray* this, */  const MyArray& b) {
 
 
 MyArray operator+ (const MyArray& a, int b) {	
-	MyArray arr{ a.size };
+	MyArray arr( a.size );
 	for (int i{}; i < a.size; ++i)
 		arr.mass[i] += a.mass[i]+b;	
 	return arr;

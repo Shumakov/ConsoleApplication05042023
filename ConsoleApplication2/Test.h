@@ -4,13 +4,13 @@
 
 // Описание и определение шаблона класса
 
-template <class T>
+template <class T, class T2>
 class Point_v1 {
 
 	T x;
-	T y;
+	T2 y;
 public:	
-	Point_v1(T x, T y) :x{ x }, y{ y } {}
+	Point_v1(T x, T2 y) :x{ x }, y{ y } {}
 	
 	friend std::ostream& operator<< (std::ostream& o, const Point_v1& p) {
 		o << "(" << p.x << "," << p.y << ")";
@@ -19,6 +19,21 @@ public:
 
 };
 
+
+template <class T>
+class Point_v1<T, double> {
+
+	T x;
+	double y;
+public:
+	Point_v1(T x, double y) :x{ x }, y{ y } {}
+
+	friend std::ostream& operator<< (std::ostream& o, const Point_v1& p) {
+		o << "(" << p.x << "," << p.y << ") - особенная";
+		return o;
+	}
+
+};
 
 
 // Описание и определение шаблона класса

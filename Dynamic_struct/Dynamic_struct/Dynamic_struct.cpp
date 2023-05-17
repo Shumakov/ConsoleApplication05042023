@@ -304,10 +304,296 @@ bool check_v2(const char* str) {
 	return st.isEmpty();
 }
 
-int main() {
+int main_tasck() {
 
 	cout << check_v2("[1/2\\3{333(444)444}555]") << endl;
 
 
 	return 0;
+}
+
+
+
+class point {
+private:
+	int x, y;
+public:
+
+	static int id;
+	point(int X, int Y) :x{ X }, y{ Y } {}
+	point() :point(0, 0) {}
+	int getX() const {
+		return x;
+	}
+
+	int getY() const {
+		return y;
+	}
+
+	void setX(int X) {
+		x = X;
+	}
+
+	void setY(int Y) {
+		y = Y;
+	}
+
+	void show() const {
+		cout << x << " " << y << endl;
+	}
+};
+int point::id{ 0 };
+
+
+class pointIteration {
+private:
+	point* value;
+	pointIteration* nextIterator;
+	pointIteration* prevIterator;
+public:
+
+	pointIteration(point* value) {
+		this->value = value;
+		nextIterator = nullptr;
+		prevIterator = nullptr;
+	}
+
+	pointIteration() :pointIteration((point*)NULL) {}
+
+	pointIteration(pointIteration* iterator) {
+		this->value = new point(*iterator->getValue());
+		this->nextIterator = NULL;
+		this->prevIterator = NULL;
+	}
+
+	void insert_after(pointIteration* iterator) {
+
+		iterator->prevIterator = this;
+		iterator->nextIterator = nextIterator;
+
+		if (nextIterator)
+			nextIterator->prevIterator = iterator;
+
+		nextIterator = iterator;
+
+	}
+
+	void insert_before(pointIteration* iterator) {
+
+		iterator->nextIterator = this;
+		iterator->prevIterator = prevIterator;
+
+
+		if (prevIterator)
+			prevIterator->nextIterator = iterator;
+
+		prevIterator = iterator;
+
+	}
+
+	pointIteration* getNext() {
+		return nextIterator;
+	}
+
+	pointIteration* getPrev() {
+		return prevIterator;
+	}
+
+	const point* getValue() const {
+		return value;
+	}
+
+
+	void setValue(point* p) {
+		value = p;
+	}
+
+	void setNext(pointIteration* next) {
+		nextIterator = next;
+	}
+
+	void setPrev(pointIteration* prev) {
+		prevIterator = prev;
+	}
+
+	void show() const {
+		value->show();
+	}
+
+	~pointIteration() {
+		if (value) {
+			delete value;
+			value = NULL;
+		}
+		if (prevIterator)
+			prevIterator->nextIterator = nextIterator;
+
+		if (nextIterator)
+			nextIterator->prevIterator = prevIterator;
+	}
+};
+
+
+class myList {
+
+private:
+	pointIteration* firstPoint;
+	pointIteration* endPoint;
+public:
+
+
+	myList() {
+		firstPoint = NULL;
+		endPoint = firstPoint;
+	}
+
+
+	myList(point* value) {
+		firstPoint = new pointIteration(value);
+		endPoint = firstPoint;
+	}
+
+
+
+	myList(myList* list) {
+		pointIteration* start1 = NULL;
+		pointIteration* start2 = list->Begin();
+
+		while (start2) {
+			pointIteration* tmp = new pointIteration(start2);
+			start1 = tmp;
+			start2 = start2->getNext();
+			start1->setNext(new pointIteration(start2));
+			start1 = start1->getNext();
+			start1->setPrev(tmp);
+		}
+	}
+
+
+	~myList() {
+		pointIteration* start = firstPoint;
+		while (start->getNext()) {
+			start = start->getNext();
+			delete start->getPrev();
+		}
+		delete endPoint;
+	}
+
+	void pop_back() {
+		if (endPoint) {
+			pointIteration* tmp = endPoint->getPrev();
+			delete endPoint;
+			endPoint = tmp;
+		}
+		else {
+			firstPoint = NULL;
+		}
+	}
+
+	void push_back(point* value) {
+
+		pointIteration* newEnd = new pointIteration(value);
+
+		if (endPoint)
+			endPoint->insert_after(newEnd);
+		else
+			firstPoint = newEnd;
+
+		endPoint = newEnd;
+	}
+
+	void pop_front() {
+		if (firstPoint) {
+			pointIteration* tmp = firstPoint->getNext();
+			delete firstPoint;
+			firstPoint = tmp;
+		}
+		else {
+			endPoint = NULL;
+		}
+	}
+
+
+	void push_front(point* value) {
+		pointIteration* newStart = new pointIteration(value);
+		if (firstPoint)
+			firstPoint->insert_before(newStart);
+		else
+			endPoint = newStart;
+
+		firstPoint = newStart;
+	}
+
+	void show() const {
+		pointIteration* start = firstPoint;
+		int count = 0;
+		while (start) {
+			cout << "Point number " << ++count << endl;
+			start->getValue()->show();
+			start = start->getNext();
+		}
+		/*
+			for(pointIteration* start = firstPoint; start; start = start->getNext()){
+			 cout << "Point number " << ++count << endl;
+			 start->getValue()->show();
+			}
+		*/
+	}
+
+	void show_rev() const {
+		pointIteration* start = endPoint;
+		int count = 0;
+		while (start) {
+			cout << "Point number " << ++count << endl;
+			start->getValue()->show();
+			start = start->getPrev();
+		}
+		/*
+			for(pointIteration* start = firstPoint; start; start = start->getNext()){
+			 cout << "Point number " << ++count << endl;
+			 start->getValue()->show();
+			}
+		*/
+	}
+
+	void setFirst(pointIteration* start) {
+		firstPoint = start;
+	}
+	void setEnd(pointIteration* end) {
+		endPoint = end;
+	}
+
+	pointIteration* Begin() {
+		return firstPoint;
+	}
+
+	pointIteration* End() {
+		return endPoint;
+	}
+};
+
+
+int main() {
+
+	myList* my = new myList(new point(0, 0));
+	float sum = 0;
+	for (int i = 0; i < 10; ++i) {
+		my->push_back(new point(i, i));
+	}
+
+	//my->show();
+
+	auto node = my->Begin();
+
+	for (int i = 0; i < 5; ++i) {
+		node = node->getNext();
+	}
+
+	node->insert_before(new pointIteration(new point(100, 100)));
+
+	my->show();
+
+	cout << endl << endl;
+	my->show_rev();
+
 }
